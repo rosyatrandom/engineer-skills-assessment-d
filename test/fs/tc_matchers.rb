@@ -1,5 +1,5 @@
 require 'test\unit'
-require_relative '..\..\lib\paths\matchers'
+require_relative '..\..\lib\fs\matchers'
 
 include Paths::Matchers
 

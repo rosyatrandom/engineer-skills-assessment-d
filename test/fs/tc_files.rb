@@ -1,6 +1,6 @@
 require 'test\unit'
 require 'Set'
-require_relative '..\..\lib\paths\files'
+require_relative '..\..\lib\fs\files'
 
 include Paths::Files
 

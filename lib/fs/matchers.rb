@@ -1,6 +1,7 @@
 # classes to allow paths to be checked in case statements
-module Paths
+module FS
   RUBY_EXTENSION = '.rb'
+
   module Matchers
     class IsRubyFile
       def self.===(path)

@@ -7,7 +7,7 @@ module Parsing
   module Lexer
     def get_tokens_for_each_line(path)
       file = File.open path
-      lex_file  file
+      lex_file file
     end
 
     private

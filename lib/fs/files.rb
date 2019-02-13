@@ -1,9 +1,9 @@
 require_relative 'matchers'
 require 'Set'
 
-module Paths
+module FS
   module Files
-    include Paths::Matchers
+    include FS::Matchers
 
     def get_ruby_files(paths)
       ruby_files, invalid = paths
@@ -14,7 +14,7 @@ module Paths
           when IsRubyFile then files << path
           else invalid << path
           end
-          
+
           [files, invalid]
         end
     end

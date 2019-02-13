@@ -1,7 +1,7 @@
 require_relative '..\parsing\lexer'
 require_relative '..\parsing\line_parser'
 require_relative '..\options'
-require_relative '..\paths\files'
+require_relative '..\fs\files'
 
 module Counter
   class CodeLineCounter
@@ -10,19 +10,19 @@ module Counter
     attr_reader :result, :options
 
     # Optionally include paths
-    def initialize(*paths)
+  def initialize *paths
       @options = Set[]
       @result = {}
       set_paths paths if paths.any?
     end
 
-    def set_paths(paths)
+  def set_paths paths
       @file_paths, invalid_paths = get_ruby_files paths
       @result[:invalid_paths] = invalid_paths if invalid_paths.any?
       self
     end
 
-    def set_count(options)
+  def set_count options
       set_options options, COUNTS
       self
     end
