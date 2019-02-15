@@ -9,7 +9,7 @@ class TestOptions < Test::Unit::TestCase
     assert_equal counting_options([COUNT_CODE]), [COUNT_CODE]
     assert_equal counting_options([OUTPUT_EACH]), []
     assert_equal(
-      counting_options([:other_option, COUNT_CODE, COUNT_BLANK ]), 
+      counting_options([:other_option, COUNT_CODE, COUNT_BLANK ]),
       [COUNT_CODE, COUNT_BLANK]
     )
   end
@@ -18,7 +18,7 @@ class TestOptions < Test::Unit::TestCase
     assert_equal summary_options([COUNT_CODE]), []
     assert_equal summary_options([OUTPUT_EACH]), [OUTPUT_EACH]
     assert_equal(
-      summary_options([:other_option, OUTPUT_EACH, OUTPUT_SUMMARY ]), 
+      summary_options([:other_option, OUTPUT_EACH, OUTPUT_SUMMARY ]),
       [OUTPUT_EACH, OUTPUT_SUMMARY]
     )
   end

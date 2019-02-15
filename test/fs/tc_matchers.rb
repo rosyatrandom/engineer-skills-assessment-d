@@ -1,7 +1,7 @@
 require 'test\unit'
 require_relative '..\..\lib\fs\matchers'
 
-include Paths::Matchers
+include FS::Matchers
 
 class TestMatchers < Test::Unit::TestCase
   def test_ruby_matcher

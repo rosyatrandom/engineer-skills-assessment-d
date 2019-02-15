@@ -6,13 +6,13 @@ module Parsing
     include Options
 
     # options is expected to be a Set
-    def initialize(options)
+    def initialize options
       @parse_code = options === COUNT_CODE
       @parse_comment = options === COUNT_COMMENT
       @parse_blank = options === COUNT_BLANK
     end
 
-    def parse(tokens)
+    def parse tokens
       output = []
 
       output << COUNT_CODE if @parse_code and has_code? tokens
@@ -23,11 +23,11 @@ module Parsing
     end
 
     private
-    def is_blank?(tokens)
+    def is_blank? tokens
       (tokens - WHITESPACE_TOKENS).empty?
     end
 
-    def has_comment?(tokens)
+    def has_comment? tokens
       (tokens & COMMENT_TOKENS).any?
     end
 

@@ -10,11 +10,11 @@ module Options
   COUNTS = [COUNT_CODE, COUNT_BLANK, COUNT_COMMENT]
   OUTPUTS = [OUTPUT_EACH, OUTPUT_SUMMARY]
 
-  def counting_options(options)
+  def counting_options options
     options & COUNTS
   end
 
-  def output_options(options)
+  def output_options options
     options & OUTPUTS
   end
 end

@@ -4,14 +4,14 @@ module FS
 
   module Matchers
     class IsRubyFile
-      def self.===(path)
+      def self.=== path
         File.exist? path and
         (File.extname path) == RUBY_EXTENSION
       end
     end
 
     class IsDirectory
-      def self.===(path)
+      def self.=== path
         Dir.exist? path
       end
     end

@@ -20,7 +20,7 @@ module Counter
       pp @result
     end
 
-    def proceed(outputs, counts, paths)
+    def proceed outputs, counts, paths
       set_paths paths
       set_count counts
       set_output outputs
@@ -28,7 +28,7 @@ module Counter
       print_output
     end
 
-    def warn_if_empty(name, coll)
+    def warn_if_empty name, coll
       if coll.empty?
 
         @some_empty = true

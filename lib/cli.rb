@@ -6,11 +6,11 @@ class CLI
 
   attr_reader :options
 
-  def self.running_from_cli?(file_name)
+  def self.running_from_cli? file_name
     file_name == $0
   end
 
-  def initialize(options=ARGV)
+  def initialize options=ARGV
     # parser strips all but paths from options
     paths = get_options_from_cli options
     set_default_counts if @count_options.empty?
@@ -21,14 +21,14 @@ class CLI
 
   private
 
-  def get_options_from_cli(options)
+  def get_options_from_cli options
     set_default_opts options
     initialize_options
 
     OptionParser.new do |opts|
       set_banner opts
       define_options opts
-    end.parse!(options)
+    end.parse! options
 
     options
   end
@@ -55,7 +55,7 @@ class CLI
     BANNER
   end
 
-  def set_default_opts(options)
+  def set_default_opts options
     options << "-h" if  options.empty?
   end
 

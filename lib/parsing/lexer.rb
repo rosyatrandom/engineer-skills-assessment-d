@@ -6,7 +6,7 @@ module Parsing
   CUSTOM_ML_STRING_TOKEN = :within_multi_line_string
 
   module Lexer
-    def get_tokens_for_each_line(path)
+    def get_tokens_for_each_line path
       file = File.open path
       lex_file file
     end
@@ -16,7 +16,7 @@ module Parsing
     # Tokenizes file and returns hash with
     # - keys: line numbers
     # - values: array of tokens for that line
-    def lex_file(file)
+    def lex_file file
       Ripper
         .lex(file)
         .then { |lexed| group_tokens_by_line_num lexed }
@@ -28,7 +28,7 @@ module Parsing
 
     def group_tokens_by_line_num token_data
       token_data.reduce({}) do |acc, item|
-        (line_num,), event = item
+        ((line_num, _), event) = item
         token = event_to_token event
         (acc[line_num] ||= []) << token
 
@@ -36,7 +36,7 @@ module Parsing
       end
     end
 
-    def event_to_token(event)
+    def event_to_token event
       event
         .to_s
         .delete_prefix('on_')

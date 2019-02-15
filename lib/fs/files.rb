@@ -5,12 +5,12 @@ module FS
   module Files
     include FS::Matchers
 
-    def get_ruby_files(paths)
+    def get_ruby_files paths
       ruby_files, invalid = paths
         .map { |path| clean_path path }
         .reduce([Set[],[]]) do |(files, invalid), path|
           case path
-          when IsDirectory then files.merge ruby_files_in_dir(path)
+          when IsDirectory then files.merge ruby_files_in_dir path
           when IsRubyFile then files << path
           else invalid << path
           end
@@ -21,8 +21,8 @@ module FS
 
     private
 
-    def ruby_files_in_dir(path)
-      glob = File.join(path, "**", "*" + RUBY_EXTENSION)
+    def ruby_files_in_dir path
+      glob = File.join(path, "**", "*#{RUBY_EXTENSION}")
       Dir.glob glob
     end
 
@@ -30,8 +30,8 @@ module FS
     # Converts all multiple slashes to single
     def clean_path(path)
       path
-        .gsub(/\\+/, "/")
-        .gsub(/\/+/, "/")
+        .gsub(/\\+/, ?/)
+        .gsub(/\/+/, ?/)
     end
   end
 end
