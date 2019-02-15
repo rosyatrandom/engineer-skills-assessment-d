@@ -1,37 +1,45 @@
-require_relative 'matchers'
-require 'Set'
+require 'set'
+require 'pathname'
 
 module FS
-  module Files
-    include FS::Matchers
+  RUBY_EXTENSION = '.rb'
 
-    def get_ruby_files paths
+  module PathnamePlus
+    refine Pathname do
+      def ruby_file?
+        self.file? and
+        (self.extname == RUBY_EXTENSION)
+      end
+    end
+  end
+
+  module Files
+    using PathnamePlus
+
+    def get_ruby_pathnames paths
       ruby_files, invalid = paths
-        .map { |path| clean_path path }
-        .reduce([Set[],[]]) do |(files, invalid), path|
-          case path
-          when IsDirectory then files.merge ruby_files_in_dir path
-          when IsRubyFile then files << path
-          else invalid << path
+        .map { |path| Pathname.new(path).cleanpath }
+        .reduce([Set[],[]]) do |(files, invalid), pathname|
+          if pathname.ruby_file?
+            files << pathname
+          elsif pathname.directory?
+            files.merge(ruby_files_in_dir pathname)
+          else
+            invalid << pathname.to_s
           end
 
           [files, invalid]
         end
     end
 
-    private
-
-    def ruby_files_in_dir path
-      glob = File.join(path, "**", "*#{RUBY_EXTENSION}")
-      Dir.glob glob
+    def clean_pathnames paths
+      paths.map { |path| Pathname.new(path).cleanpath }
     end
 
-    # Converts all backslashes to slashes
-    # Converts all multiple slashes to single
-    def clean_path(path)
-      path
-        .gsub(/\\+/, ?/)
-        .gsub(/\/+/, ?/)
+    private
+
+    def ruby_files_in_dir pathname
+      Pathname.glob(pathname + "**" + "*#{RUBY_EXTENSION}")
     end
   end
 end

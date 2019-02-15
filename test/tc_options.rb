@@ -1,5 +1,5 @@
 require 'test\unit'
-require 'Set'
+require 'set'
 require_relative '..\lib\options'
 
 include Options

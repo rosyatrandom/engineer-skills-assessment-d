@@ -6,19 +6,12 @@ module Parsing
   CUSTOM_ML_STRING_TOKEN = :within_multi_line_string
 
   module Lexer
-    def get_tokens_for_each_line path
-      file = File.open path
-      lex_file file
-    end
-
-    private
-
     # Tokenizes file and returns hash with
     # - keys: line numbers
     # - values: array of tokens for that line
-    def lex_file file
+    def get_tokens_for_each_line pathname
       Ripper
-        .lex(file)
+        .lex(pathname.open)
         .then { |lexed| group_tokens_by_line_num lexed }
         .then { |grouped| add_missing_lines grouped }
         .values

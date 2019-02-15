@@ -1,4 +1,4 @@
-require_relative 'counter'
+require_relative 'code_line_counter'
 require_relative '..\cli'
 
 module Counter

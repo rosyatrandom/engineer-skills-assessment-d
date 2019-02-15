@@ -17,7 +17,7 @@ module Counter
     end
 
     def set_paths paths
-      @file_paths, invalid_paths = get_ruby_files paths
+      @pathnames, invalid_paths = get_ruby_pathnames paths
       @result[:invalid_paths] = invalid_paths if invalid_paths.any?
       self
     end
@@ -34,7 +34,7 @@ module Counter
 
     def count
       @line_parser = Parsing::LineParser.new @options
-      result = @file_paths.map { |file| [file, count_file(file)] }
+      result = @pathnames.map { |file| [file.to_s, count_file(file)] }
 
       add_summary result if @options === OUTPUT_SUMMARY
       add_file_counts result if @options === OUTPUT_EACH

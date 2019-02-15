@@ -1,3 +1,3 @@
-require 'test/unit'
+require 'test\unit'
 require_relative 'tc_options'
-require_relative 'fs/ts_fs'
+require_relative 'fs\ts_fs'

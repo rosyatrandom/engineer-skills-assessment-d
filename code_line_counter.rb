@@ -1,5 +1,5 @@
-require_relative 'lib\counter\counter'
-require_relative 'lib\counter\counter_cli'
+require_relative 'lib\counter\code_line_counter'
+require_relative 'lib\counter\code_line_counter_cli'
 require_relative 'lib\cli'
 
 include Counter
