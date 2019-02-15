@@ -16,21 +16,15 @@ module Counter
     end
 
     private
-    def print_output
-      pp @result
-    end
-
     def proceed outputs, counts, paths
       set_paths paths
       set_count counts
       set_output outputs
-      count
-      print_output
+      pp count
     end
 
     def warn_if_empty name, coll
       if coll.empty?
-
         @some_empty = true
       end
     end

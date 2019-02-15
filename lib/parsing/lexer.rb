@@ -9,27 +9,26 @@ module Parsing
     # Tokenizes file and returns hash with
     # - keys: line numbers
     # - values: array of tokens for that line
-    def get_tokens_for_each_line pathname
+    def self.get_tokens_for_each_line src
       Ripper
-        .lex(pathname.open)
-        .then { |lexed| group_tokens_by_line_num lexed }
-        .then { |grouped| add_missing_lines grouped }
+        .lex(src)
+        .then(&method(:group_tokens_by_line_num))
+        .then(&method(:add_missing_lines))
         .values
     end
 
-    private
+    private_class_method
 
-    def group_tokens_by_line_num token_data
-      token_data.reduce({}) do |acc, item|
-        ((line_num, _), event) = item
-        token = event_to_token event
-        (acc[line_num] ||= []) << token
-
-        acc
-      end
+    def self.group_tokens_by_line_num token_data
+      array_hash = Hash.new { |h,k| h[k] = [] }
+      token_data
+        .map { |((line, _), event)| { line => [to_token(event)] } }
+        .reduce(array_hash) do |acc, data|
+          acc.merge(data) { |_, arr, token| arr + token }
+        end
     end
 
-    def event_to_token event
+    def self.to_token event
       event
         .to_s
         .delete_prefix('on_')
@@ -40,15 +39,14 @@ module Parsing
     # any information for lines within it, as it's considered part of the
     # string. This does not occur for multi-line comments, so we can assume
     # that any missing lines are inside some multi-line string
-    def add_missing_lines tokens_by_line_num
+    def self.add_missing_lines tokens_by_line_num
       keys = tokens_by_line_num.keys
-      max_line = keys.max
-      missing_lines = (2...max_line).reject { |i| keys.include? i }
-      tokens_by_missing_lines = missing_lines
-        .map { |l| [l, [CUSTOM_ML_STRING_TOKEN]] }
-        .to_h
+      
+      (2...keys.max)
+        .reject { |i| keys.include? i }
+        .each { |l| tokens_by_line_num[l] << CUSTOM_ML_STRING_TOKEN }
 
-      tokens_by_line_num.merge tokens_by_missing_lines
+      tokens_by_line_num
     end
   end
 end

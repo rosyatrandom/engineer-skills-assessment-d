@@ -1,6 +1,6 @@
 require 'test\unit'
 require 'set'
-require_relative '..\lib\options'
+require_relative '..\lib\counter\options'
 
 include Options
 

@@ -1,82 +1,41 @@
+require_relative 'options'
+require_relative 'item_counter'
+require_relative 'output'
 require_relative '..\parsing\lexer'
 require_relative '..\parsing\line_parser'
-require_relative '..\options'
 require_relative '..\fs\files'
 
 module Counter
   class CodeLineCounter
-    include Parsing::Lexer, Options, FS::Files
-
-    attr_reader :result, :options
-
-    # Optionally include paths
-    def initialize *paths
-      @options = Set[]
-      @result = {}
-      set_paths paths if paths.any?
-    end
-
-    def set_paths paths
-      @pathnames, invalid_paths = get_ruby_pathnames paths
-      @result[:invalid_paths] = invalid_paths if invalid_paths.any?
-      self
-    end
-
-    def set_count options
-      set_options options, COUNTS
-      self
-    end
-
-    def set_output options
-      set_options options, OUTPUTS
-      self
-    end
+    include Parsing, Options, FS::Files
 
     def count
-      @line_parser = Parsing::LineParser.new @options
-      result = @pathnames.map { |file| [file.to_s, count_file(file)] }
-
-      add_summary result if @options === OUTPUT_SUMMARY
-      add_file_counts result if @options === OUTPUT_EACH
-
-      self
+      counts = count_each_file
+      get_output counts
     end
 
     private
 
-    def count_file file
-      get_tokens_for_each_line(file)
-        .map { |types| @line_parser.parse types }
-        .reduce init_counts, &method(:count_parsed)
+    def count_each_file
+      parser = LineParser.new @count_options
+      @ruby_file_paths
+        .to_h { |file_path| [file_path.to_s, count_file(file_path, parser)] }
     end
 
-    def count_parsed acc, parsed_line
-      parsed_line.each { |count| acc[count] += 1 }
-      acc
+    def count_file file_path, parser
+      counter = ItemCounter.new @count_options
+      Lexer
+        .get_tokens_for_each_line(File.open file_path)
+        .then { |tokens_by_line| parser.parse_lines tokens_by_line }
+        .each_with_object(counter) { |line_tokens, counter| counter.increment_for line_tokens }
     end
 
-    def init_counts
-      counting_options(@options).map { |opt| [opt, 0] }.to_h
-    end
+    def get_output counts
+      output = Output.new counts, @invalid_paths
+      output.add_summary_count if output_summary?
+      output.add_each_file_count if output_each?
 
-    def set_options options, option_list
-      options_in_list = options & option_list
-      @options.merge options_in_list
-    end
-
-    def add_summary result
-      @result[:summary] = result
-        .map { |(_, counts)| counts}
-        .reduce { |acc, counts| merge_counts acc, counts }
-    end
-
-    def merge_counts acc, counts
-      acc.merge(counts) { |type, c1, c2| c1 + c2 }
-    end
-
-    def add_file_counts result
-      file_counts = result.to_h
-      @result.merge! file_counts
+      output.output
     end
   end
 end

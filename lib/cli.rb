@@ -1,8 +1,8 @@
 require 'optparse'
-require_relative 'options'
+require_relative 'counter\options'
 
 class CLI
-  include Options
+  include Counter::Options
 
   attr_reader :options
 
@@ -38,7 +38,7 @@ class CLI
     @output_options = []
   end
 
-  def set_banner(opts)
+  def set_banner opts
     opts.banner = <<~BANNER
       code_line_counter.rb [options] path1 path2 ..."
       paths can be:
@@ -59,7 +59,7 @@ class CLI
     options << "-h" if  options.empty?
   end
 
-  def define_options(opts)
+  def define_options opts
     opts.on("-s", "--output-summary", "outputs total counts of all files") do
       @output_options << OUTPUT_SUMMARY
     end
