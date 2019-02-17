@@ -13,6 +13,7 @@ module Lexing
         .lex(src)
         .then { |lexed| group_tokens_by_line_num lexed }
         .then { |grouped| add_missing_lines grouped }
+        .tap { |z| pp z }
         .values
 
       if block_given? then yield tokens else tokens end
@@ -21,7 +22,7 @@ module Lexing
     private_class_method
 
   def group_tokens_by_line_num token_data
-    array_hash = Hash.new { |h,k| h[k] = [] }
+    array_hash = {}#Hash.new { |h,k| h[k] = [] }
     token_data
       .map { |((line, _), event)| { line => [to_token(event)] } }
       .reduce(array_hash) do |acc, data|
@@ -42,11 +43,11 @@ module Lexing
   # that any missing lines are inside some multi-line string
   def add_missing_lines tokens_by_line_num
     keys = tokens_by_line_num.keys
-    
-    (2...keys.max)
-      .reject { |i| keys.include? i }
-      .each { |l| tokens_by_line_num[l] << CUSTOM_ML_STRING_TOKEN }
 
-    tokens_by_line_num
+    (1..keys.max)
+      .to_h do |line_num|
+        tokens = tokens_by_line_num[line_num] || [CUSTOM_ML_STRING_TOKEN]
+        [line_num, tokens]
+      end
   end
 end

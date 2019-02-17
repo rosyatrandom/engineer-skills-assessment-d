@@ -17,9 +17,8 @@ class PredicatesChecker
     items
       .map { |item| check_item item }
       .each_with_object(Counter.new @checks.keys) do |results, counter|
-        counter.increment_for results
-          .filter { |_, result| result }
-          .keys
+        true_values = results.filter { |_, result| result }.keys
+        counter.increment_for true_values
       end
   end
 end

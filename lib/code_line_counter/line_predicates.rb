@@ -5,7 +5,7 @@ module CodeLineCounter
   module LinePredicates
     include Options, Lexing
 
-    CODE    =  ->(tokens) { (tokens - (COMMENT_TOKENS + WHITESPACE_TOKENS)).any? }
+    CODE    = ->(tokens) { (tokens - (COMMENT_TOKENS + WHITESPACE_TOKENS)).any? }
     BLANK   = ->(tokens) { (tokens - WHITESPACE_TOKENS).empty? }
     COMENT  = ->(tokens) { (tokens & COMMENT_TOKENS).any? }
 

@@ -17,16 +17,19 @@ module CodeLineCounter
 
     def set_paths paths
       @ruby_file_paths, @invalid_paths = get_ruby_file_paths paths
+
       self
     end
 
     def set_count options
       @count_options = options
+
       self
     end
 
     def set_output options
       @output_options = options
+      
       self
     end
 

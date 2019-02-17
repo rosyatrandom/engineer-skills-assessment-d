@@ -12,9 +12,7 @@ class Counter
   end
 
   def + other
-    self
-      .counts
-      .merge(other.counts) { |_, c1, c2| c1 + c2 }
+    @counts.merge(other.counts) { |_, c1, c2| c1 + c2 }
 
     self
   end
