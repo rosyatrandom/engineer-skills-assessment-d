@@ -1,5 +1,9 @@
-module Counter
+require_relative '..\fs\files'
+
+module CodeLineCounter
   module Options
+    include FS::Files
+
     COUNT_CODE = :code
     COUNT_BLANK = :blank
     COUNT_COMMENT = :comment

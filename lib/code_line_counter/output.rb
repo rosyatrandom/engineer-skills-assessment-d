@@ -1,4 +1,4 @@
-module Counter
+module CodeLineCounter
   class Output
     attr_reader :output
 

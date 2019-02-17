@@ -1,8 +1,8 @@
 require 'test\unit'
 require 'set'
-require_relative '..\lib\counter\options'
+require_relative '..\..\lib\code_line_counter\options'
 
-include Options
+include CodeLineCounter::Options
 
 class TestOptions < Test::Unit::TestCase
   def check_counting_options

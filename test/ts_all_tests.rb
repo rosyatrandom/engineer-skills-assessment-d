@@ -1,3 +1,3 @@
 require 'test\unit'
-require_relative 'counter\ts_counter'
+require_relative 'code_line_counter\ts_code_line_counter'
 require_relative 'fs\ts_fs'

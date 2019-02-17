@@ -1,8 +1,8 @@
 require 'optparse'
-require_relative 'counter\options'
+require_relative 'code_line_counter\options'
 
 class CLI
-  include Counter::Options
+  include CodeLineCounter::Options
 
   attr_reader :options
 

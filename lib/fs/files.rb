@@ -1,5 +1,4 @@
 require 'set'
-#require 'pathname'
 require_relative 'pathname_refined'
 
 module FS
@@ -10,7 +9,7 @@ module FS
 
     def get_ruby_file_paths paths
       ruby_files, invalid = paths
-        .map(&method(:to_clean_pathname))
+        .map { |path| to_clean_pathname path }
         .reduce([Set[],[]]) do |(files, invalid), pathname|
           if pathname.ruby_file?
             files << pathname

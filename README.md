@@ -1,5 +1,5 @@
 # ruby-code-line-counter
-VERSION 0.2
+VERSION 0.3
 _________________
 
 ## Description:
@@ -66,8 +66,12 @@ CLC has only been tested on Ruby 2.6.0.
 
 ### 0.2
 - Some minor internal naming / style changes
-- Fixed bug wherein lines within some multi-line strings would not be
+- Fixed bug: lines within some multi-line strings would not be
   counted due to being counted as single token.
+
+### 0.3
+- Fixed bug: individual files not processable
+- refactoring to decouple code elements
 
 ## To-Do:
 

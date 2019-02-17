@@ -1,7 +1,7 @@
 require_relative 'code_line_counter'
 require_relative '..\cli'
 
-module Counter
+module CodeLineCounter
   class CLICodeLineCounter < CodeLineCounter
     def run
       outputs, counts, paths, stop = CLI.new.options
