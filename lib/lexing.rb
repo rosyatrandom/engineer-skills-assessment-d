@@ -6,26 +6,24 @@ module Lexing
   CUSTOM_ML_STRING_TOKEN = :within_multi_line_string
 
   # Tokenizes file and returns hash with
-    # - keys: line numbers
-    # - values: array of tokens for that line
-    def get_tokens_for_each_line src
-      tokens = Ripper
-        .lex(src)
-        .then { |lexed| group_tokens_by_line_num lexed }
-        .then { |grouped| add_missing_lines grouped }
-        .tap { |z| pp z }
-        .values
+  # - keys: line numbers
+  # - values: array of tokens for that line
+  def get_tokens_for_each_line src
+    tokens = Ripper
+      .lex(src)
+      .then { |lexed| group_tokens_by_line_num lexed }
+      .then { |grouped| add_missing_lines grouped }
+      .values
 
-      if block_given? then yield tokens else tokens end
-    end
+    if block_given? then yield tokens else tokens end
+  end
 
-    private_class_method
+  private_class_method
 
   def group_tokens_by_line_num token_data
-    array_hash = {}#Hash.new { |h,k| h[k] = [] }
     token_data
       .map { |((line, _), event)| { line => [to_token(event)] } }
-      .reduce(array_hash) do |acc, data|
+      .reduce({}) do |acc, data|
         acc.merge(data) { |_, arr, token| arr + token }
       end
   end
